@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ОГАТ — прототип главной страницы</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%230F2236%22/%3E%3Crect x=%226%22 y=%229%22 width=%2220%22 height=%2214%22 rx=%222%22 fill=%22none%22 stroke=%22white%22 stroke-width=%222%22/%3E%3Cpath d=%22M12 12v8M16 12v8M20 12v8%22 stroke=%22white%22 stroke-width=%222%22/%3E%3C/svg%3E">
+<link rel="preload" as="image" href="assets/hero-poster.jpg" fetchpriority="high">
+<meta name="description" content="Транспортно-логистическая компания ОГАТ, Владивосток, с 1939 года. Мультимодальные перевозки, склад, ремонт грузовой техники.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1621; --navy:#0F2236; --navy-950:#09141F; --steel:#3B78B5; --steel-600:#2F659C; --steel-200:#9DBEDF;
+  --muted:#5D6A79; --surface:#F3F5F8; --line:#E2E6EB; --white:#fff;
+  --r:6px; --wrap:1240px; --gut:32px;
+  --font:"Manrope", Arial, sans-serif;
+  --shadow-border:0 0 0 1px oklch(0 0 0 / .06),0 1px 2px -1px oklch(0 0 0 / .06),0 2px 4px 0 oklch(0 0 0 / .04);
+  --shadow-border-hover:0 0 0 1px oklch(0 0 0 / .08),0 1px 2px -1px oklch(0 0 0 / .08),0 2px 4px 0 oklch(0 0 0 / .06);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+/* icon symbols use non-scaling-stroke, so this is the rendered width: 2px beside 500–600 text */
+svg{stroke-width:2px}
+body{margin:0;background:var(--white);color:var(--ink);font:400 16px/1.6 var(--font);-webkit-font-smoothing:antialiased}
+img,video{display:block;max-width:100%}
+a{color:inherit}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+:focus-visible{outline:2px solid var(--steel);outline-offset:3px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 24px;border-radius:var(--r);border:1px solid transparent;font:600 15px var(--font);text-decoration:none;cursor:pointer;transition-property:background-color,border-color,scale;transition-duration:150ms;transition-timing-function:ease-out;-webkit-tap-highlight-color:transparent}
+.btn:has(svg){padding-inline-end:22px}
+.btn svg{width:18px;height:18px}
+.btn-primary{background:var(--steel);color:#fff}
+.btn-line{border-color:rgba(255,255,255,.35);color:#fff;background:transparent}
+.btn-dark{background:var(--navy);color:#fff}
+
+/* header */
+header.site{position:fixed;inset:0 0 auto 0;z-index:40;color:#fff;transition:background .25s,box-shadow .25s}
+header.site.solid{background:var(--navy);box-shadow:0 1px 0 rgba(255,255,255,.06)}
+header.site .wrap{display:flex;align-items:center;gap:40px;height:80px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-weight:700;font-size:20px;letter-spacing:.14em}
+.brand i{width:30px;height:24px;border:2px solid currentColor;border-radius:3px;background:repeating-linear-gradient(90deg,currentColor 0 2px,transparent 2px 5px) center/14px 10px no-repeat}
+.brand small{display:block;font-size:11px;letter-spacing:.04em;font-weight:500;opacity:.65;margin-top:2px}
+nav.main{display:flex;gap:28px;margin-right:auto}
+nav.main a{text-decoration:none;font-size:15px;font-weight:500;opacity:.85;transition:opacity 150ms ease-out}
+.head-tel{text-decoration:none;font-weight:600;white-space:nowrap}
+header .btn{height:44px;padding:0 18px;font-size:14px}
+.burger{display:none;margin-left:auto;width:44px;height:44px;border-radius:var(--r);background:rgba(255,255,255,.08);border:0;cursor:pointer;transition:scale 150ms ease-out;-webkit-tap-highlight-color:transparent}
+.burger span{display:block;width:18px;height:2px;background:#fff;margin:4px auto}
+
+/* hero */
+.hero{position:relative;min-height:min(100vh,900px);display:flex;flex-direction:column;justify-content:flex-end;color:#fff;background:var(--navy-950);overflow:hidden}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,20,31,.94) 0%,rgba(9,20,31,.72) 50%,rgba(9,20,31,.35) 100%)}
+.hero .wrap{position:relative;z-index:1;width:100%;padding-top:150px}
+.hero h1{font-size:66px;max-width:820px;margin:0 0 22px;letter-spacing:-.03em;line-height:1.05}
+.hero p{font-size:19px;max-width:600px;color:#C5D1DE;margin:0 0 38px}
+.hero .actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero-facts{display:grid;grid-template-columns:repeat(4,1fr);margin-top:88px;border-top:1px solid rgba(255,255,255,.14)}
+.hero-facts div{padding:26px 24px 34px 0}
+.hero-facts div+div{padding-left:24px;border-left:1px solid rgba(255,255,255,.14)}
+.hero-facts b{display:block;font-size:28px;font-weight:600;letter-spacing:-.02em}
+.hero-facts span{font-size:14px;color:#A9B8C8}
+
+/* section basics */
+section.block{padding:112px 0}
+.kicker{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--steel);margin-bottom:16px}
+.head{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:end;margin-bottom:56px}
+.head h2{font-size:44px}
+.head p{margin:0;color:var(--muted);font-size:17px}
+
+/* services */
+.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.card{all:unset;box-sizing:border-box;grid-column:span 2;display:flex;flex-direction:column;min-height:300px;padding:32px;border-radius:8px;background:var(--surface);border:1px solid transparent;cursor:pointer;transition-property:background-color,box-shadow;transition-duration:150ms;transition-timing-function:ease-out;-webkit-tap-highlight-color:transparent}
+.card.wide{grid-column:span 3}
+.card:focus-visible{outline:2px solid var(--steel);outline-offset:2px}
+.card .num{font-size:14px;font-weight:600;color:var(--steel);font-variant-numeric:tabular-nums;margin-bottom:56px}
+.card h3{font-size:22px;margin-bottom:10px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.card .foot{margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:600;color:var(--steel)}
+.card .foot span:last-child{color:var(--muted);font-weight:500}
+.card .foot svg{width:16px;height:16px;vertical-align:-3px;margin-left:6px}
+
+/* advantages */
+.dark{background:var(--navy);color:#fff}
+.dark .kicker{color:var(--steel-200)}
+.adv{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px}
+.adv h2{font-size:44px;margin-bottom:22px}
+.adv .lead{color:#B6C3D1;font-size:17px;margin:0 0 32px}
+.adv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.1);border-radius:8px;overflow:hidden}
+.adv-grid div{background:var(--navy);padding:32px}
+.adv-grid h3{font-size:20px;margin-bottom:10px}
+.adv-grid p{margin:0;color:#A9B8C8;font-size:15px}
+
+/* history */
+.history{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.h-step img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:8px;margin-bottom:24px;outline:1px solid oklch(0 0 0 / .1);outline-offset:-1px}
+.h-step .y{font-size:15px;font-weight:700;color:var(--steel);letter-spacing:.04em}
+.h-step h3{font-size:22px;margin:6px 0 10px}
+.h-step p{margin:0;color:var(--muted);font-size:15px}
+
+/* partners marquee */
+.partners{padding:88px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden}
+.partners .head{margin-bottom:40px}
+.marquee{display:flex;width:max-content;animation:roll 50s linear infinite}
+.marquee ul{display:flex;gap:16px;list-style:none;margin:0;padding:2px 16px 2px 0}
+.marquee li{width:200px;height:104px;border:1px solid transparent;box-shadow:var(--shadow-border);border-radius:8px;display:grid;place-items:center;padding:20px;background:#fff}
+.marquee img{max-height:50px;max-width:100%;object-fit:contain;filter:grayscale(1);opacity:.65;transition-property:filter,opacity;transition-duration:150ms;transition-timing-function:ease-out}
+@keyframes roll{to{transform:translateX(-50%)}}
+
+/* request */
+.request{background:var(--surface)}
+.req-box{display:grid;grid-template-columns:.85fr 1.15fr;border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 20px 50px rgba(15,34,54,.07)}
+.req-side{background:var(--navy);color:#fff;padding:48px}
+.req-side h2{font-size:34px;margin-bottom:16px}
+.req-side > p{color:#B6C3D1;margin:0 0 36px}
+.req-side dl{margin:0}
+.req-side dt{font-size:13px;color:#8FA2B6;margin-top:18px}
+.req-side dd{margin:2px 0 0;font-weight:600}
+.req-side dd a{text-decoration:none}
+.req-side .msg{display:flex;gap:10px;margin-top:32px}
+.req-side .msg a{height:40px;padding:0 16px;border-radius:var(--r);border:1px solid rgba(255,255,255,.2);display:inline-flex;align-items:center;font-size:14px;font-weight:600;text-decoration:none;transition-property:border-color,scale;transition-duration:150ms;transition-timing-function:ease-out;-webkit-tap-highlight-color:transparent}
+.req-form{padding:48px}
+.req-form h3{font-size:22px;margin-bottom:24px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.field label{font-size:13px;font-weight:500;color:var(--muted)}
+.field input,.field select,.field textarea{font:500 16px var(--font);color:var(--ink);background:var(--surface);border:1px solid transparent;border-radius:var(--r);height:52px;padding:0 16px;transition:border-color .2s,background .2s}
+.field textarea{height:112px;padding:14px 16px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;background:#fff;border-color:var(--steel);box-shadow:0 0 0 3px rgba(59,120,181,.15)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);margin:4px 0 24px}
+.consent input{margin-top:3px;accent-color:var(--steel)}
+.form-ok{padding:28px;border-radius:8px;background:var(--surface)}
+.form-ok h3{font-size:22px;margin-bottom:6px}
+.map-wrap{margin-top:16px;border-radius:10px;overflow:hidden;height:380px;background:var(--line)}
+.map-wrap iframe{display:block;width:100%;height:100%;border:0;filter:saturate(.6)}
+
+/* footer */
+footer{background:var(--navy-950);color:#94A5B8;font-size:14px}
+footer .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:48px;padding-top:64px;padding-bottom:48px}
+footer .brand{color:#fff;margin-bottom:18px}
+footer h4{color:#fff;font-size:14px;font-weight:600;margin:0 0 16px}
+footer ul{list-style:none;margin:0;padding:0}
+footer li{margin-bottom:10px}
+footer a{text-decoration:none}
+.copy{border-top:1px solid rgba(255,255,255,.08)}
+.copy .wrap{display:flex;justify-content:space-between;padding-top:22px;padding-bottom:22px;font-size:13px}
+
+/* drawer + modal */
+dialog{border:0;padding:0;color:var(--ink);background:#fff;overscroll-behavior:contain}
+dialog::backdrop{background:rgba(9,20,31,.6);backdrop-filter:blur(2px)}
+dialog.drawer{margin:0 0 0 auto;height:100%;max-height:100%;width:min(540px,100%);max-width:100%}
+dialog.modal{width:min(480px,calc(100% - 32px));border-radius:10px}
+/* open/close via transitions so a close mid-open reverses instead of snapping;
+   enter 300ms, exit 150ms (drawer 200ms: it slides fully out); browsers without allow-discrete just show/hide */
+dialog,dialog::backdrop{opacity:0;transition-property:opacity,translate,filter,display,overlay;transition-duration:150ms;transition-timing-function:ease-out;transition-behavior:allow-discrete}
+dialog.drawer{transition-duration:200ms}
+dialog[open],dialog[open]::backdrop{opacity:1;transition-duration:300ms}
+@starting-style{dialog[open],dialog[open]::backdrop{opacity:0}}
+.dlg{padding:44px 40px;position:relative}
+.dlg-x{position:absolute;top:18px;right:18px;width:40px;height:40px;border-radius:var(--r);border:0;background:var(--surface);cursor:pointer;font-size:20px;color:var(--ink);transition:scale 150ms ease-out;-webkit-tap-highlight-color:transparent}
+.dlg h3{font-size:30px;margin-bottom:12px;padding-right:44px}
+.dlg .desc{color:var(--muted);margin:0 0 26px}
+.ticks{list-style:none;padding:0;margin:0 0 28px;border-top:1px solid var(--line)}
+.ticks li{padding:14px 0;border-bottom:1px solid var(--line);font-weight:500}
+.manager{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 20px;border-radius:8px;background:var(--surface);margin-bottom:28px}
+.manager span{font-size:13px;color:var(--muted)}
+.manager a{font-weight:700;font-size:18px;text-decoration:none;color:var(--ink)}
+.dlg h4{font-size:17px;margin:0 0 16px}
+
+/* cookie */
+.cookie{position:fixed;left:24px;bottom:24px;z-index:50;max-width:380px;display:flex;gap:16px;align-items:center;padding:16px 18px;border-radius:8px;background:var(--navy);color:#C5D1DE;font-size:13px;box-shadow:0 16px 40px rgba(9,20,31,.3)}
+.cookie button{flex:none;height:36px;padding:0 16px;border:0;border-radius:var(--r);background:#fff;color:var(--ink);font:600 13px var(--font);cursor:pointer;transition:scale 150ms ease-out;-webkit-tap-highlight-color:transparent}
+
+/* hover only on hover-capable pointers: on touch, :hover latches after a tap */
+@media (hover:hover){
+  .btn-primary:hover{background:var(--steel-600)}
+  .btn-line:hover{border-color:#fff}
+  .btn-dark:hover{background:var(--ink)}
+  nav.main a:hover{opacity:1}
+  .card:hover{background:#fff;box-shadow:var(--shadow-border-hover),0 18px 40px oklch(0 0 0 / .06)}
+  .partners:hover .marquee{animation-play-state:paused}
+  .marquee li:hover img{filter:none;opacity:1}
+  .req-side .msg a:hover{border-color:#fff}
+  footer a:hover{color:#fff}
+}
+
+/* staged hero entrance on first load: 100ms stagger; hidden state lives in the from-keyframe */
+.hero .wrap > *{animation:fade-in 300ms ease-out both}
+.hero .wrap > :nth-child(2){animation-delay:100ms}
+.hero .wrap > :nth-child(3){animation-delay:200ms}
+.hero .wrap > :nth-child(4){animation-delay:300ms}
+@keyframes fade-in{from{opacity:0}}
+@keyframes fade-in-up{from{opacity:0;transform:translateY(12px);filter:blur(4px)}}
+
+/* scroll reveal: opacity for everyone, movement and blur only without the reduced-motion preference */
+.js .reveal{opacity:0;transition:opacity 300ms ease-out}
+.js .reveal.in{opacity:1}
+.history .reveal:nth-child(2){transition-delay:100ms}
+.history .reveal:nth-child(3){transition-delay:200ms}
+
+@media (prefers-reduced-motion:no-preference){
+  .hero .wrap > *{animation-name:fade-in-up}
+  .js .reveal{translate:0 12px;filter:blur(4px);transition-property:opacity,translate,filter}
+  .js .reveal.in{translate:0 0;filter:none}
+  dialog.drawer:not([open]){translate:100% 0}
+  @starting-style{dialog.drawer[open]{translate:100% 0}}
+  dialog.modal:not([open]){translate:0 -12px;filter:blur(4px)}
+  @starting-style{dialog.modal[open]{translate:0 12px;filter:blur(4px)}}
+  .btn:not(:disabled):active,.burger:active,.dlg-x:active,.cookie button:active,.req-side .msg a:active{scale:.96}
+}
+@media (prefers-reduced-motion:reduce){
+  .marquee{animation:none;width:auto;max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+  .marquee ul[aria-hidden]{display:none}
+  .marquee ul{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;padding:2px 0;width:100%}
+  .marquee ul li{width:auto}
+}
+
+@media (max-width:1100px){
+  nav.main{gap:18px}
+  .head-tel{display:none}
+  .cards{grid-template-columns:1fr 1fr}
+  .card,.card.wide{grid-column:span 1}
+  .card.wide:last-child{grid-column:span 2}
+}
+@media (max-width:900px){
+  :root{--gut:16px}
+  header.site .wrap{height:64px;gap:16px}
+  header.site .btn{display:none}
+  .brand small{display:none}
+  .burger{display:block}
+  nav.main{display:none;position:fixed;inset:64px 0 auto 0;background:var(--navy);flex-direction:column;gap:0;padding:8px 16px 24px;margin:0}
+  nav.main.open{display:flex}
+  nav.main a{padding:16px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:17px}
+  header.site.menu-open{background:var(--navy)}
+  .hero{min-height:0}
+  .hero .wrap{padding-top:120px}
+  .hero h1{font-size:40px}
+  .hero p{font-size:17px}
+  .hero .actions .btn{flex:1 1 100%}
+  .hero-facts{grid-template-columns:1fr 1fr;margin-top:56px}
+  .hero-facts div,.hero-facts div+div{padding:20px 12px 20px 0;border-left:0}
+  .hero-facts div:nth-child(even){padding-left:16px;border-left:1px solid rgba(255,255,255,.14)}
+  .hero-facts div:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.14)}
+  .hero-facts b{font-size:22px}
+  section.block{padding:72px 0}
+  .head{grid-template-columns:1fr;gap:16px;margin-bottom:36px}
+  .head h2,.adv h2{font-size:32px}
+  .cards{grid-template-columns:1fr}
+  .card,.card.wide,.card.wide:last-child{grid-column:auto;min-height:0;padding:24px}
+  .card .num{margin-bottom:28px}
+  .adv{grid-template-columns:1fr;gap:40px}
+  .adv-grid{grid-template-columns:1fr}
+  .adv-grid div{padding:24px}
+  .history{grid-template-columns:1fr;gap:40px}
+  .partners{padding:64px 0}
+  .marquee li{width:150px;height:84px;padding:14px}
+  .marquee ul{grid-template-columns:repeat(3,1fr);gap:10px}
+  .marquee img{max-height:38px}
+  .req-box{grid-template-columns:1fr}
+  .req-side,.req-form{padding:28px 20px}
+  .req-side h2{font-size:28px}
+  .grid2{grid-template-columns:1fr;gap:0}
+  .map-wrap{height:300px}
+  footer .wrap{grid-template-columns:1fr;gap:28px}
+  .copy .wrap{flex-direction:column;gap:6px}
+  .dlg{padding:32px 20px}
+  .dlg h3{font-size:26px}
+  .manager{flex-direction:column;align-items:flex-start;gap:4px}
+  .cookie{left:16px;right:16px;bottom:72px;max-width:none} /* clears the "Powered by Netlify" badge Netlify injects bottom-right (~60px) */
+}
+</style>
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path vector-effect="non-scaling-stroke" d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  </defs>
+</svg>
+
+<header class="site" id="header">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="ОГАТ — на главную"><i></i><span>ОГАТ<small>с 1939 года</small></span></a>
+    <nav class="main" id="nav">
+      <a href="#services">Услуги</a>
+      <a href="#advantages">Преимущества</a>
+      <a href="#history">История</a>
+      <a href="#partners">Партнёры</a>
+      <a href="#request">Контакты</a>
+    </nav>
+    <a class="head-tel" href="tel:+79143302575">+7 (914) 330-25-75</a>
+    <button class="btn btn-primary" type="button" data-open="callback">Обратный звонок</button>
+    <button class="burger" type="button" aria-label="Меню" aria-controls="nav" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <video autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.jpg">
+      <source src="assets/hero.mp4" type="video/mp4">
+    </video>
+    <div class="wrap">
+      <h1>Надёжная логистика на&nbsp;Дальнем Востоке</h1>
+      <p>Мультимодальные и контейнерные перевозки, складские услуги и ремонт грузовой техники. Полностью закроем дальневосточное звено вашей цепочки поставок.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#request">Рассчитать перевозку <svg><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-line" href="#services">Все услуги</a>
+      </div>
+      <div class="hero-facts">
+        <div><b>1939</b><span>год основания компании</span></div>
+        <div><b>1990-е</b><span>первые международные автоперевозки в Приморье</span></div>
+        <div><b>Все порты</b><span>Владивостока — аккредитация автопарка</span></div>
+        <div><b>Вся Россия</b><span>мультимодальные и контейнерные перевозки</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="services">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><div class="kicker">Услуги</div><h2>Закрываем дальневосточное звено цепочки поставок</h2></div>
+        <p>За каждым направлением закреплён профильный специалист. Откройте услугу, чтобы увидеть состав работ, прямой контакт и оставить заявку.</p>
+      </div>
+      <div class="cards reveal">
+        <button class="card" type="button" data-svc="multimodal">
+          <span class="num">01</span>
+          <h3>Мультимодальные перевозки</h3>
+          <p>Морской, железнодорожный и автомобильный транспорт под задачу груза</p>
+          <span class="foot"><span>Подробнее<svg><use href="#i-arrow"/></svg></span><span>+7 (914) 330-25-75</span></span>
+        </button>
+        <button class="card" type="button" data-svc="warehouse">
+          <span class="num">02</span>
+          <h3>Складские услуги</h3>
+          <p>Ответственное хранение, кросс-докинг и контейнерный терминал во Владивостоке</p>
+          <span class="foot"><span>Подробнее<svg><use href="#i-arrow"/></svg></span><span>+7 (902) 556-84-13</span></span>
+        </button>
+        <button class="card" type="button" data-svc="repair">
+          <span class="num">03</span>
+          <h3>Ремонт и обслуживание грузовой техники</h3>
+          <p>Диагностика, ремонт и техническое обслуживание грузовых автомобилей и спецтехники</p>
+          <span class="foot"><span>Подробнее<svg><use href="#i-arrow"/></svg></span><span>+7 (914) 330-25-75</span></span>
+        </button>
+        <button class="card wide" type="button" data-svc="city">
+          <span class="num">04</span>
+          <h3>Городские автоперевозки</h3>
+          <p>Собственный автопарк, доступ во все порты города, контейнерные перевозки по Дальневосточному региону</p>
+          <span class="foot"><span>Подробнее<svg><use href="#i-arrow"/></svg></span><span>+7 (914) 707-01-76</span></span>
+        </button>
+        <button class="card wide" type="button" data-svc="remote">
+          <span class="num">05</span>
+          <h3>Перевозка в труднодоступные регионы</h3>
+          <p>Подбираем маршрут, транспорт и экспедирование туда, где нет простых решений</p>
+          <span class="foot"><span>Подробнее<svg><use href="#i-arrow"/></svg></span><span>+7 (914) 330-25-75</span></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="block dark" id="advantages">
+    <div class="wrap adv">
+      <div class="reveal">
+        <div class="kicker">Почему ОГАТ</div>
+        <h2>Опыт, который работает на ваш груз</h2>
+        <p class="lead">«ОГАТ» — провайдер логистических и складских услуг на Дальнем Востоке. Мы закрываем перевозку под ключ: от маршрута и документов до хранения и доставки в любой город России.</p>
+        <a class="btn btn-primary" href="#request">Обсудить задачу <svg><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="adv-grid reveal">
+        <div><h3>С 1939 года</h3><p>Более 85 лет на транспортном рынке Приморского края</p></div>
+        <div><h3>Собственный автопарк</h3><p>Аккредитация во всех портах Владивостока</p></div>
+        <div><h3>Опасные грузы</h3><p>Перевозим грузы, требующие особых условий, и страхуем перевозку</p></div>
+        <div><h3>Под ключ</h3><p>Маршрут, документы, страхование и контроль на всём пути</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="history">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><div class="kicker">История</div><h2>Более 85 лет на транспортном рынке</h2></div>
+        <p>Начинали с перевозок по Приморскому краю — сегодня работаем с клиентами по всей России.</p>
+      </div>
+      <div class="history">
+        <div class="h-step reveal">
+          <img src="assets/history-1939.png" alt="Грузовой автомобиль конца 1930-х годов">
+          <div class="y">1939</div>
+          <h3>Основание компании</h3>
+          <p>Первые услуги — перевозки гужевым транспортом внутри Приморского края.</p>
+        </div>
+        <div class="h-step reveal">
+          <img src="assets/history-1989.png" alt="Грузовик КамАЗ с полуприцепом">
+          <div class="y">1989</div>
+          <h3>Международные перевозки</h3>
+          <p>В начале 90-х первыми в Приморском крае начали международные автомобильные перевозки.</p>
+        </div>
+        <div class="h-step reveal">
+          <img src="assets/history-today.png" alt="Здание компании ОГАТ во Владивостоке">
+          <div class="y">СЕГОДНЯ</div>
+          <h3>Логистика по всей России</h3>
+          <p>Мультимодальные перевозки, склад и сопутствующие услуги для клиентов по всей стране.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="partners" id="partners" aria-label="Партнёры">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><div class="kicker">Партнёры</div><h2>Нам доверяют</h2></div>
+        <p>Федеральные перевозчики, порты и промышленные компании.</p>
+      </div>
+    </div>
+    <div class="marquee">
+      <ul class="js-logos">
+        <li><img src="assets/logo-rzd.png" alt="РЖД"></li>
+        <li><img src="assets/logo-fesco.png" alt="FESCO"></li>
+        <li><img src="assets/logo-transcontainer.png" alt="Трансконтейнер"></li>
+        <li><img src="assets/logo-vmtp.png" alt="ВМТП"></li>
+        <li><img src="assets/logo-vmkt.png" alt="ВМКТ"></li>
+        <li><img src="assets/logo-huawei.png" alt="Huawei"></li>
+        <li><img src="assets/logo-beeline.png" alt="Билайн"></li>
+        <li><img src="assets/logo-pacific.png" alt="Pacific Logistic"></li>
+        <li><img src="assets/logo-aerogruz.png" alt="Аэрогруз"></li>
+        <li><img src="assets/logo-highland.png" alt="Хайлэнд Голд"></li>
+        <li><img src="assets/logo-wilo.png" alt="Wilo"></li>
+        <li><img src="assets/logo-chukotka.png" alt="Чукотская торговая компания"></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block request" id="request">
+    <div class="wrap" id="contacts">
+      <div class="req-box reveal">
+        <div class="req-side">
+          <div class="kicker">Заявка</div>
+          <h2>Расскажите о задаче — предложим маршрут и условия</h2>
+          <p>Специалист профильного направления свяжется с вами в рабочее время.</p>
+          <dl>
+            <dt>Офис</dt><dd><a href="tel:+74232362600">+7 (423) 236-26-00</a></dd>
+            <dt>Основной номер</dt><dd><a href="tel:+79143302575">+7 (914) 330-25-75</a></dd>
+            <dt>Почта</dt><dd><a href="mailto:info@ogat.ru">info@ogat.ru</a></dd>
+            <dt>Адрес</dt><dd>г. Владивосток, ул. Днепровская, 25</dd>
+          </dl>
+          <div class="msg"><a href="https://wa.me/79143302575" target="_blank" rel="noopener">WhatsApp</a><a href="https://t.me/Dzhal90" target="_blank" rel="noopener">Telegram</a></div>
+        </div>
+        <div class="req-form">
+          <form class="js-form" novalidate>
+            <h3>Заявка на перевозку</h3>
+            <div class="grid2">
+              <div class="field"><label for="f-name">Имя</label><input id="f-name" name="name" autocomplete="name" required></div>
+              <div class="field"><label for="f-phone">Телефон</label><input id="f-phone" name="phone" type="tel" class="js-phone" placeholder="+7 (___) ___-__-__" required pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}"></div>
+            </div>
+            <div class="field"><label for="f-svc">Услуга</label>
+              <select id="f-svc" name="service">
+                <option>Мультимодальные перевозки</option>
+                <option>Складские услуги</option>
+                <option>Ремонт и обслуживание грузовой техники</option>
+                <option>Городские автоперевозки</option>
+                <option>Перевозка в труднодоступные регионы</option>
+                <option>Другое</option>
+              </select>
+            </div>
+            <div class="field"><label for="f-msg">Задача (необязательно)</label><textarea id="f-msg" name="message" placeholder="Например: 2×40HC Владивосток — Новосибирск или ремонт ходовой тягача"></textarea></div>
+            <label class="consent"><input type="checkbox" required> <span>Согласен на обработку персональных данных в соответствии с <a href="privacy.html">политикой конфиденциальности</a></span></label>
+            <button class="btn btn-dark" type="submit">Отправить заявку <svg><use href="#i-arrow"/></svg></button>
+          </form>
+          <div class="form-ok" hidden><h3>Заявка отправлена</h3><p>Спасибо! Мы свяжемся с вами в ближайшее рабочее время.</p></div>
+        </div>
+      </div>
+      <div class="map-wrap reveal">
+        <iframe title="Карта: Владивосток, ул. Днепровская, 25" loading="lazy" src="https://yandex.ru/map-widget/v1/?ll=131.922657%2C43.141762&z=16&pt=131.922657,43.141762,pm2blm"></iframe>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="brand" href="#top"><i></i><span>ОГАТ</span></a>
+      <p style="margin:0;max-width:360px">Транспортно-логистическая компания. Мультимодальные перевозки, склад и ремонт грузовой техники. Владивосток, с 1939 года.</p>
+    </div>
+    <div>
+      <h4>Документы</h4>
+      <ul>
+        <li><a href="rekvizity.html">Реквизиты организации</a></li>
+        <li><a href="privacy.html">Политика обработки персональных данных</a></li>
+        <li><a href="consent.html">Согласие на обработку персональных данных</a></li>
+        <li><a href="cookies.html">Политика использования cookies</a></li>
+        <li><a href="terms.html">Пользовательское соглашение</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Прямые линии</h4>
+      <ul>
+        <li>Склад — <a href="tel:+79025568413">+7 (902) 556-84-13</a></li>
+        <li>Автоперевозки — <a href="tel:+79147070176">+7 (914) 707-01-76</a></li>
+        <li>Перевозки — <a href="tel:+79143302575">+7 (914) 330-25-75</a></li>
+        <li><a href="mailto:info@ogat.ru">info@ogat.ru</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="copy"><div class="wrap"><span>© 2026 ООО «Компания ОГАТ»</span><span>Прототип главной страницы</span></div></div>
+</footer>
+
+<dialog class="drawer" id="svc-dialog" aria-labelledby="svc-title">
+  <div class="dlg">
+    <button class="dlg-x" type="button" data-close aria-label="Закрыть">×</button>
+    <div class="kicker" id="svc-num"></div>
+    <h3 id="svc-title"></h3>
+    <p class="desc" id="svc-desc"></p>
+    <ul class="ticks" id="svc-list"></ul>
+    <div class="manager"><span>Прямая линия направления</span><a id="svc-phone" href="#"></a></div>
+    <form class="js-form" novalidate>
+      <h4>Оставить заявку по направлению</h4>
+      <input type="hidden" name="service" id="svc-field">
+      <div class="field"><label for="d-name">Имя</label><input id="d-name" name="name" required></div>
+      <div class="field"><label for="d-phone">Телефон</label><input id="d-phone" type="tel" class="js-phone" placeholder="+7 (___) ___-__-__" required pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}"></div>
+      <label class="consent"><input type="checkbox" required> <span>Согласен на <a href="consent.html">обработку персональных данных</a></span></label>
+      <button class="btn btn-primary" type="submit" style="width:100%">Отправить</button>
+    </form>
+    <div class="form-ok" hidden><h3>Заявка отправлена</h3><p>Специалист направления свяжется с вами в рабочее время.</p></div>
+  </div>
+</dialog>
+
+<dialog class="modal" id="callback" aria-labelledby="cb-title">
+  <div class="dlg">
+    <button class="dlg-x" type="button" data-close aria-label="Закрыть">×</button>
+    <h3 id="cb-title">Обратный звонок</h3>
+    <p class="desc">Оставьте номер — перезвоним в рабочее время.</p>
+    <form class="js-form" novalidate>
+      <div class="field"><label for="cb-name">Имя</label><input id="cb-name" name="name" required></div>
+      <div class="field"><label for="cb-phone">Телефон</label><input id="cb-phone" type="tel" class="js-phone" placeholder="+7 (___) ___-__-__" required pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}"></div>
+      <label class="consent"><input type="checkbox" required> <span>Согласен на <a href="consent.html">обработку персональных данных</a></span></label>
+      <button class="btn btn-primary" type="submit" style="width:100%">Перезвоните мне</button>
+    </form>
+    <div class="form-ok" hidden><h3>Спасибо!</h3><p>Мы перезвоним вам в ближайшее рабочее время.</p></div>
+  </div>
+</dialog>
+
+<div class="cookie" hidden><span>Мы используем cookies для корректной работы сайта.</span><button type="button">Понятно</button></div>
+
+<script>
+const SVC = {
+  multimodal:{n:'01',t:'Мультимодальные перевозки',d:'Комбинируем морской, железнодорожный и автомобильный транспорт под задачу груза.',l:['Разработка оптимального маршрута','Оформление всей документации','Страхование груза','Организация и контроль перевозок'],p:'+7 (914) 330-25-75'},
+  warehouse:{n:'02',t:'Складские услуги',d:'Хранение и обработка грузов на складе и контейнерном терминале во Владивостоке.',l:['Ответственное хранение','Услуги кросс-докинга','Погрузо-разгрузочные работы','Контейнерный терминал'],p:'+7 (902) 556-84-13'},
+  repair:{n:'03',t:'Ремонт и обслуживание грузовой техники',d:'Диагностика, ремонт и техническое обслуживание грузовых автомобилей и спецтехники.',l:['Компьютерная диагностика','Ремонт двигателя, ходовой части и тормозной системы','Плановое техническое обслуживание','Ремонт спецтехники и прицепов'],p:'+7 (914) 330-25-75'},
+  city:{n:'04',t:'Городские автоперевозки',d:'Собственный автотранспорт и доступ во все порты Владивостока.',l:['Собственный автотранспорт','Аккредитованы во всех портах города','Контейнерные перевозки по ДВ региону','Перевозим опасный груз'],p:'+7 (914) 707-01-76'},
+  remote:{n:'05',t:'Перевозка в труднодоступные регионы',d:'Подбираем маршрут и транспорт туда, где нет простых решений.',l:['Подбор оптимального маршрута','Экспедирование груза','Подбор транспорта','Хранение на складе'],p:'+7 (914) 330-25-75'}
+};
+const $ = s => document.querySelector(s);
+const drawer = $('#svc-dialog');
+
+function resetForm(scope){
+  scope.querySelectorAll('.js-form').forEach(f => { f.hidden = false; f.reset(); f.nextElementSibling.hidden = true; });
+}
+document.querySelectorAll('[data-svc]').forEach(b => b.addEventListener('click', () => {
+  const s = SVC[b.dataset.svc];
+  resetForm(drawer);
+  $('#svc-num').textContent = 'Направление ' + s.n;
+  $('#svc-title').textContent = s.t;
+  $('#svc-desc').textContent = s.d;
+  $('#svc-list').innerHTML = s.l.map(x => `<li>${x}</li>`).join('');
+  $('#svc-phone').textContent = s.p;
+  $('#svc-phone').href = 'tel:' + s.p.replace(/[^\d+]/g, '');
+  $('#svc-field').value = s.t;
+  drawer.showModal();
+}));
+document.querySelectorAll('[data-open="callback"]').forEach(b => b.addEventListener('click', () => { resetForm($('#callback')); $('#callback').showModal(); }));
+document.querySelectorAll('dialog').forEach(d => {
+  d.addEventListener('click', e => { if (e.target === d) d.close(); });
+  d.querySelectorAll('[data-close]').forEach(x => x.addEventListener('click', () => d.close()));
+});
+
+// +7 (XXX) XXX-XX-XX; separators appear only before typed digits, so backspace never gets stuck
+function maskPhone(v){
+  let d = v.replace(/\D/g, '');
+  if (d[0] === '8') d = '7' + d.slice(1);
+  if (d[0] !== '7') d = '7' + d;
+  d = d.slice(1, 11);
+  if (!d) return '';
+  let s = '+7 (' + d.slice(0, 3);
+  if (d.length > 3) s += ') ' + d.slice(3, 6);
+  if (d.length > 6) s += '-' + d.slice(6, 8);
+  if (d.length > 8) s += '-' + d.slice(8, 10);
+  return s;
+}
+document.querySelectorAll('.js-phone').forEach(i => i.addEventListener('input', () => { i.value = maskPhone(i.value); }));
+
+// prototype: forms are not sent anywhere, only validated
+document.querySelectorAll('.js-form').forEach(f => f.addEventListener('submit', e => {
+  e.preventDefault();
+  if (!f.checkValidity()) { f.reportValidity(); return; }
+  f.hidden = true;
+  f.nextElementSibling.hidden = false;
+}));
+
+const header = $('#header'), burger = $('.burger'), nav = $('#nav');
+const onScroll = () => header.classList.toggle('solid', scrollY > 40);
+addEventListener('scroll', onScroll, {passive:true}); onScroll();
+function setMenu(open){
+  nav.classList.toggle('open', open);
+  header.classList.toggle('menu-open', open);
+  burger.setAttribute('aria-expanded', open);
+}
+burger.addEventListener('click', () => setMenu(!nav.classList.contains('open')));
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+
+// seamless marquee: second copy of the logo list, hidden from screen readers
+const logos = $('.js-logos');
+const copy = logos.cloneNode(true);
+copy.setAttribute('aria-hidden', 'true');
+copy.querySelectorAll('img').forEach(i => i.alt = '');
+logos.after(copy);
+
+// smooth anchor scrolling in JS: Chrome turns CSS scroll-behavior:smooth into a jump when Windows animations are off,
+// and the client asked for smooth scrolling explicitly
+let scrollRun = 0;
+function smoothScrollTo(y){
+  const run = ++scrollRun, start = scrollY, dist = y - start;
+  const dur = Math.min(1100, 450 + Math.abs(dist) * .15), t0 = performance.now();
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  (function step(now){
+    if (run !== scrollRun) return;
+    const p = Math.min(1, (now - t0) / dur);
+    scrollTo({top: start + dist * ease(p), behavior: 'instant'});
+    if (p < 1) requestAnimationFrame(step);
+  })(t0);
+}
+['wheel', 'touchstart', 'keydown'].forEach(ev => addEventListener(ev, () => { scrollRun++; }, {passive: true})); // user input wins
+document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+  const id = a.getAttribute('href'), target = id.length > 1 && document.querySelector(id);
+  if (!target) return;
+  e.preventDefault();
+  smoothScrollTo(id === '#top' ? 0 : target.getBoundingClientRect().top + scrollY);
+  history.pushState(null, '', id);
+}));
+
+// hero video plays for everyone (the client asked for it). If the browser refuses autoplay, the poster (its first frame)
+// stays on screen and playback starts on the visitor's first interaction
+const heroVideo = $('.hero video');
+heroVideo.play().catch(() => {
+  const start = () => heroVideo.play().catch(() => {});
+  ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(ev => addEventListener(ev, start, {once: true, passive: true}));
+});
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+const cookie = $('.cookie');
+let seen = false;
+try { seen = localStorage.getItem('ogat-cookie') === '1'; } catch (e) {}
+cookie.hidden = seen;
+cookie.querySelector('button').addEventListener('click', () => {
+  cookie.hidden = true;
+  try { localStorage.setItem('ogat-cookie', '1'); } catch (e) {}
+});
+
+console.assert(maskPhone('89143302575') === '+7 (914) 330-25-75', 'mask 8-prefix');
+console.assert(maskPhone('+7 (914') === '+7 (914', 'mask partial');
+console.assert(maskPhone('') === '', 'mask empty');
+</script>
+</body>
+</html>
