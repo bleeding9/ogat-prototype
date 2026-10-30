@@ -43,7 +43,7 @@ header.site{position:fixed;inset:0 0 auto 0;z-index:40;color:#fff;transition:bac
 header.site.solid{background:var(--navy);box-shadow:0 1px 0 rgba(255,255,255,.06)}
 header.site .wrap{display:flex;align-items:center;gap:40px;height:80px}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-weight:700;font-size:20px;letter-spacing:.14em}
-.brand i{width:30px;height:24px;border:2px solid currentColor;border-radius:3px;background:repeating-linear-gradient(90deg,currentColor 0 2px,transparent 2px 5px) center/14px 10px no-repeat}
+.brand img{height:40px;width:auto}
 .brand small{display:block;font-size:11px;letter-spacing:.04em;font-weight:500;opacity:.65;margin-top:2px}
 nav.main{display:flex;gap:28px;margin-right:auto}
 nav.main a{text-decoration:none;font-size:15px;font-weight:500;opacity:.85;transition:opacity 150ms ease-out}
@@ -286,7 +286,7 @@ dialog[open],dialog[open]::backdrop{opacity:1;transition-duration:300ms}
 
 <header class="site" id="header">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="ОГАТ — на главную"><i></i><span>ОГАТ<small>с 1939 года</small></span></a>
+    <a class="brand" href="#top" aria-label="ОГАТ — на главную"><img src="assets/logo.png" alt=""><span>ОГАТ<small>с 1939 года</small></span></a>
     <nav class="main" id="nav">
       <a href="#services">Услуги</a>
       <a href="#advantages">Преимущества</a>
@@ -482,7 +482,7 @@ dialog[open],dialog[open]::backdrop{opacity:1;transition-duration:300ms}
 <footer>
   <div class="wrap">
     <div>
-      <a class="brand" href="#top"><i></i><span>ОГАТ</span></a>
+      <a class="brand" href="#top"><img src="assets/logo.png" alt=""><span>ОГАТ</span></a>
       <p style="margin:0;max-width:360px">Транспортно-логистическая компания. Мультимодальные перевозки, склад и ремонт грузовой техники. Владивосток, с 1939 года.</p>
     </div>
     <div>
